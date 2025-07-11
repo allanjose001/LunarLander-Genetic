@@ -1,0 +1,4 @@
+gymnasium
+numpy
+swig
+#Build Tools do Visual Studio: Desenvolvimento para C++
