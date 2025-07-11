@@ -9,6 +9,6 @@ from utils.evaluation import evaluate_individual
 genes = np.random.uniform(-1, 1, 12)
 
 print("Testando avaliação de indivíduo...")
-fitness = evaluate_individual(genes, n_episodes=3, render=True)
+fitness = evaluate_individual(genes, n_episodes=3, render=False)
 print("Fitness (média de recompensas):", fitness)
 print("Genes testados:", genes)

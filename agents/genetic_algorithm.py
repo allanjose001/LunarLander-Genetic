@@ -38,7 +38,11 @@ def genetic_algorithm(
         best = population.best_individual()
         print(f"Geração {gen+1}: Melhor fitness = {best.fitness:.2f}")
         print(f"Genes: {best.genes}\n")
-        evaluate_individual(best.genes, n_episodes=1, render=True)
+        # Removido o render de cada geração
 
-    # Retorna o melhor indivíduo final
-    return population.best_individual()
+    # Renderiza o melhor indivíduo final
+    best_final = population.best_individual()
+    print("Pronto para renderizar o melhor indivíduo final!")
+    input("Pressione ENTER para visualizar o melhor agente...")
+    evaluate_individual(best_final.genes, n_episodes=3, render=True)
+    return best_final
