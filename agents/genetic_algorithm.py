@@ -20,17 +20,23 @@ def genetic_algorithm(
 
     for gen in range(n_generations):
         new_population = Population(size=0, individual_size=individual_size)
+
+        # ELITISMO: copia os melhores 5% para a nova população
+        n_elite = max(1, int(0.05 * pop_size))
+        population.sort_by_fitness(reverse=True)  # <-- COLOQUE AQUI!
+        for ind in population.individuals[:n_elite]:
+            elite = ind.clone()
+            elite.fitness = ind.fitness
+            new_population.add(elite)
+
+        # Preenche o restante da população normalmente
         while len(new_population) < pop_size:
-            # Seleção dos pais
-            parent1 = tournament_selection(population, tournament_size=3)
-            parent2 = tournament_selection(population, tournament_size=3)
-            # Reprodução
+            parent1 = roulette_selection(population)
+            parent2 = roulette_selection(population)
+
             child = parent1.crossover(parent2)
-            # Mutação
             child.mutate(mutation_rate=mutation_rate, mutation_strength=mutation_strength)
-            # Avaliação
             child.fitness = evaluate_individual(child.genes, n_episodes=n_episodes)
-            # Adiciona filho à nova população
             new_population.add(child)
 
         population = new_population
@@ -45,5 +51,5 @@ def genetic_algorithm(
     best_final = population.best_individual()
     print("Pronto para renderizar o melhor indivíduo final!")
     input("Pressione ENTER para visualizar o melhor agente...")
-    evaluate_individual(best_final.genes, n_episodes=3, render=True)
+    evaluate_individual(best_final.genes, n_episodes=5, render=True)
     return best_final
