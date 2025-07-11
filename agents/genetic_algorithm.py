@@ -1,6 +1,7 @@
 from agents.population import Population
 from agents.selection import roulette_selection
 from utils.evaluation import evaluate_individual
+from agents.selection import tournament_selection
 
 def genetic_algorithm(
     pop_size=50,
@@ -21,8 +22,8 @@ def genetic_algorithm(
         new_population = Population(size=0, individual_size=individual_size)
         while len(new_population) < pop_size:
             # Seleção dos pais
-            parent1 = roulette_selection(population)
-            parent2 = roulette_selection(population)
+            parent1 = tournament_selection(population, tournament_size=3)
+            parent2 = tournament_selection(population, tournament_size=3)
             # Reprodução
             child = parent1.crossover(parent2)
             # Mutação
