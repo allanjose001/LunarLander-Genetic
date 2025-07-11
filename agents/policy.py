@@ -19,7 +19,7 @@ def combined_policy(obs, genes):
 
     # Ação 1: motor esquerdo (se ângulo > limite)
     scores[1] = linear_score
-    if obs[4] > genes[10]:
+    if obs[4] < genes[10]:
         scores[1] += abs(obs[4] - genes[10])  # reforça ação se condição for satisfeita
 
     # Ação 2: motor principal (se vel_y < limite)
@@ -29,7 +29,7 @@ def combined_policy(obs, genes):
 
     # Ação 3: motor direito (se ângulo < limite)
     scores[3] = linear_score
-    if obs[4] < genes[11]:
+    if obs[4] > genes[11]:
         scores[3] += abs(obs[4] - genes[11])
 
     # Seleciona ação com maior score
