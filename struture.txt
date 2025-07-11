@@ -1,0 +1,16 @@
+LunarLander-Genetic/
+│
+├── main.py                # Código principal para rodar o experimento
+├── agents/
+│   └── genetic_algorithm.py   # Implementação do algoritmo genético
+│   └── individual.py         # Representação e operações dos indivíduos
+│   └── selection.py          # Métodos de seleção
+│   └── mutation.py           # Métodos de mutação
+│   └── crossover.py          # Métodos de reprodução/crossover
+│
+├── utils/
+│   └── evaluation.py         # Funções de avaliação/adaptação (fitness)
+│   └── helpers.py            # Funções auxiliares
+│
+├── base_pseudocodes.txt      # Referência dos pseudocódigos
+├── README.md                 # Documentação do projeto

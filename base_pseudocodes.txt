@@ -1,0 +1,21 @@
+função ALGORITMO-GENÉTICO(população, FN-ADAPTA) retorna um indivíduo
+	entradas: população, um conjunto de indivíduos
+		  FN-ADAPTA, uma função que mede a adaptação de um indivíduo
+	repita
+		nova_população ← conjunto vazio
+		para i = 1 até TAMANHO(população) faça
+			x ← SELEÇÃO-ALEATÓRIA(população, FN-ADAPTA)
+			y ← SELEÇÃO-ALEATÓRIA(população, FN-ADAPTA)
+			filho ← REPRODUZ(x, y)
+			se (pequena probabilidade aleatória) então filho ← MUTAÇÃO(filho)
+			adicionar filho à nova_população
+		população ← nova_população
+	até algum indivíduo estar adaptado o suficiente ou até ter decorrido tempo suficiente
+	retornar o melhor indivíduo em população, de acordo com FN-ADAPTA
+________________________________________________________________________________
+
+função REPRODUZ(x, y) retorna um indivíduo
+	entradas: x, y, indivíduos pais
+	n ← COMPRIMENTO(x)
+	c ← número aleatório de 1 a n
+	retornar CONCATENA(SUBCADEIA(x, 1 c), SUBCADEIA(y, c + 1, n))
