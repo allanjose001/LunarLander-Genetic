@@ -7,7 +7,7 @@ from agents.genetic_algorithm import genetic_algorithm
 if __name__ == "__main__":
     best = genetic_algorithm(
         pop_size=50,           # pode ajustar para testes rápidos
-        individual_size=9,
+        individual_size=12,
         n_generations=10,       # pode ajustar para testes rápidos
         mutation_rate=0.1,
         mutation_strength=0.5,

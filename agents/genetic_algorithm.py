@@ -4,7 +4,7 @@ from utils.evaluation import evaluate_individual
 
 def genetic_algorithm(
     pop_size=50,
-    individual_size=9,
+    individual_size=12,
     n_generations=20,
     mutation_rate=0.1,
     mutation_strength=0.5,

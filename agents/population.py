@@ -1,7 +1,7 @@
 from agents.individual import Individual
 
 class Population:
-    def __init__(self, size=50, individual_size=9):
+    def __init__(self, size=50, individual_size=12):
         self.size = size
         self.individual_size = individual_size
         self.individuals = [Individual(size=individual_size) for _ in range(size)]
