@@ -1,0 +1,16 @@
+import numpy as np
+
+def roulette_selection(population):
+    fitness_values = np.array(population.get_all_fitness())
+    # Ajusta fitness para evitar valores negativos
+    min_fitness = np.min(fitness_values)
+    if min_fitness < 0:
+        fitness_values = fitness_values - min_fitness + 1e-6
+    total_fitness = np.sum(fitness_values)
+    if total_fitness == 0:
+        # Se todos os fitness são zero, seleciona aleatoriamente
+        idx = np.random.randint(len(population))
+        return population[idx]
+    probabilities = fitness_values / total_fitness
+    idx = np.random.choice(len(population), p=probabilities)
+    return population[idx]
