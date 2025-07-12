@@ -2,6 +2,7 @@ from agents.population import Population
 from agents.selection import roulette_selection
 from utils.evaluation import evaluate_individual
 from agents.selection import tournament_selection
+from agents.mutation import *
 
 def genetic_algorithm(
     pop_size=50,
@@ -23,7 +24,7 @@ def genetic_algorithm(
 
         # ELITISMO: copia os melhores 5% para a nova população
         n_elite = max(1, int(0.05 * pop_size))
-        population.sort_by_fitness(reverse=True)  # <-- COLOQUE AQUI!
+        population.sort_by_fitness(reverse=True)
         for ind in population.individuals[:n_elite]:
             elite = ind.clone()
             elite.fitness = ind.fitness
@@ -31,11 +32,15 @@ def genetic_algorithm(
 
         # Preenche o restante da população normalmente
         while len(new_population) < pop_size:
-            parent1 = roulette_selection(population)
+            parent1 = tournament_selection(population, tournament_size=3)
+            #parent2 = tournament_selection(population, tournament_size=3)
+            #parent1 = roulette_selection(population)
             parent2 = roulette_selection(population)
 
             child = parent1.crossover(parent2)
-            child.mutate(mutation_rate=mutation_rate, mutation_strength=mutation_strength)
+            #child.genes = gaussian_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength)
+            #child.genes = mutation.random_reset_mutation(child.genes, mutation_rate=0.1, bounds=bounds)
+            child.genes = non_uniform_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength, generation=gen, max_generations=n_generations)
             child.fitness = evaluate_individual(child.genes, n_episodes=n_episodes)
             new_population.add(child)
 
@@ -47,9 +52,18 @@ def genetic_algorithm(
         print(f"Genes: {best.genes}\n")
         # Removido o render de cada geração
 
-    # Renderiza o melhor indivíduo final
+    
+    while True:
+        user_input = input("Digite 1 para renderizar o melhor agente ou 0 para sair: ")
+        if user_input == "1":
+            evaluate_individual(population.best_individual().genes, n_episodes=1, render=True)
+        elif user_input == "0":
+            print("Encerrando o programa.")
+            break
+        else:
+            print("Entrada inválida. Digite 1 ou 0.")
     best_final = population.best_individual()
-    print("Pronto para renderizar o melhor indivíduo final!")
-    input("Pressione ENTER para visualizar o melhor agente...")
-    evaluate_individual(best_final.genes, n_episodes=5, render=True)
+    #print("Pronto para renderizar o melhor indivíduo final!")
+    #input("Pressione ENTER para visualizar o melhor agente...")
+    #evaluate_individual(best_final.genes, n_episodes=5, render=True)
     return best_final

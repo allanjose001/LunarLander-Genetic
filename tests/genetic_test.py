@@ -9,7 +9,7 @@ if __name__ == "__main__":
         pop_size=50,
         individual_size=12,
         n_generations=10,
-        mutation_rate=0.1,
+        mutation_rate=0.3,
 
         mutation_strength=0.5,
         n_episodes=5
