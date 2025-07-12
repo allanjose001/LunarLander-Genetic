@@ -15,6 +15,12 @@ def evaluate_individual(genes, n_episodes=3, render=False):
             episode_reward += reward
             if truncated:
                 break
+
+         # Penalidade se não tocar o solo com nenhuma perna
+        if obs[6] == 0 and obs[7] == 0:
+            penalty = -100  # valor ajustável
+            episode_reward += penalty
+
         total_reward += episode_reward / n_episodes
     env.close()
     # Retorna a média das recompensas como fitness

@@ -16,7 +16,7 @@ def roulette_selection(population):
     return population[idx]
 
 
-def tournament_selection(population, tournament_size=3):
+def tournament_selection(population, tournament_size=7):
     # Escolhe indivíduos aleatórios
     selected_indices = np.random.choice(len(population), size=tournament_size, replace=False)
     selected_individuals = [population[idx] for idx in selected_indices]

@@ -23,7 +23,7 @@ def genetic_algorithm(
         new_population = Population(size=0, individual_size=individual_size)
 
         # ELITISMO: copia os melhores 5% para a nova população
-        n_elite = max(1, int(0.05 * pop_size))
+        n_elite = max(1, int(0.01 * pop_size))
         population.sort_by_fitness(reverse=True)
         for ind in population.individuals[:n_elite]:
             elite = ind.clone()
@@ -32,10 +32,10 @@ def genetic_algorithm(
 
         # Preenche o restante da população normalmente
         while len(new_population) < pop_size:
-            #parent1 = tournament_selection(population, tournament_size=3)
-            #parent2 = tournament_selection(population, tournament_size=3)
-            parent1 = roulette_selection(population)
-            parent2 = roulette_selection(population)
+            parent1 = tournament_selection(population, tournament_size=7)
+            parent2 = tournament_selection(population, tournament_size=7)
+            #parent1 = roulette_selection(population)
+            #parent2 = roulette_selection(population)
 
             child = parent1.crossover(parent2)
             child.genes = gaussian_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength)
