@@ -1,4 +1,4 @@
-from agents.population import Population
+from agents.population import Population, Individual
 from agents.selection import roulette_selection
 from utils.evaluation import evaluate_individual
 from agents.selection import tournament_selection
@@ -6,7 +6,7 @@ from agents.mutation import *
 
 def genetic_algorithm(
     pop_size=50,
-    individual_size=12,
+    individual_size=15,
     n_generations=20,
     mutation_rate=0.1,
     mutation_strength=0.5,
@@ -14,6 +14,9 @@ def genetic_algorithm(
 ):
     # Inicializa população
     population = Population(size=pop_size, individual_size=individual_size)
+
+    best_fitness = None
+    stagnation_counter = 0
 
     # Avalia fitness inicial
     for ind in population.individuals:
@@ -32,15 +35,15 @@ def genetic_algorithm(
 
         # Preenche o restante da população normalmente
         while len(new_population) < pop_size:
-            parent1 = tournament_selection(population, tournament_size=3)
-            #parent2 = tournament_selection(population, tournament_size=3)
+            parent1 = tournament_selection(population, tournament_size=7)
+            parent2 = tournament_selection(population, tournament_size=7)
             #parent1 = roulette_selection(population)
-            parent2 = roulette_selection(population)
+            #parent2 = roulette_selection(population)
 
             child = parent1.crossover(parent2)
-            #child.genes = gaussian_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength)
+            child.genes = gaussian_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength)
             #child.genes = mutation.random_reset_mutation(child.genes, mutation_rate=0.1, bounds=bounds)
-            child.genes = non_uniform_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength, generation=gen, max_generations=n_generations)
+            #child.genes = non_uniform_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength, generation=gen, max_generations=n_generations)
             child.fitness = evaluate_individual(child.genes, n_episodes=n_episodes)
             new_population.add(child)
 
@@ -50,8 +53,31 @@ def genetic_algorithm(
         best = population.best_individual()
         print(f"Geração {gen+1}: Melhor fitness = {best.fitness:.2f}")
         print(f"Genes: {best.genes}\n")
-        # Removido o render de cada geração
 
+        # Monitoramento de estagnação
+        if best_fitness is None or best.fitness > best_fitness:
+            best_fitness = best.fitness
+            stagnation_counter = 0
+        else:
+            stagnation_counter += 1
+
+        # Reset de 50% da população após 4 gerações sem evolução
+        if stagnation_counter >= 4:
+            print("Estagnação detectada! Resetando 50% da população...")
+            n_reset = int(0.5 * pop_size)
+            # Mantém os elitistas
+            population.sort_by_fitness(reverse=True)
+            elitistas = population.individuals[:n_elite]
+            # Gera novos indivíduos aleatórios
+            novos = [Individual(size=individual_size) for _ in range(n_reset)]
+            # Preenche o restante com os melhores não elitistas
+            restantes = population.individuals[n_elite:pop_size-n_reset]
+            # Nova população
+            population.individuals = elitistas + restantes + novos
+            # Avalia fitness dos novos indivíduos
+            for ind in novos:
+                ind.fitness = evaluate_individual(ind.genes, n_episodes=n_episodes)
+            stagnation_counter = 0
     
     while True:
         user_input = input("Digite 1 para renderizar o melhor agente ou 0 para sair: ")
