@@ -17,9 +17,13 @@ def evaluate_individual(genes, n_episodes=3, render=False):
                 break
 
          # Penalidade se não tocar o solo com nenhuma perna
-        if obs[6] == 0 and obs[7] == 0:
-            penalty = -100  # valor ajustável
+        if obs[6] == 0 or obs[7] == 0:
+            penalty = -100
             episode_reward += penalty
+
+        # Penalidade por não pousar no centro
+        penalty = -100 * abs(obs[0])
+        episode_reward += penalty
 
         total_reward += episode_reward / n_episodes
     env.close()
