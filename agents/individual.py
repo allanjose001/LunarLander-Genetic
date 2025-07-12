@@ -13,12 +13,6 @@ class Individual:
         # Retorna uma cópia do indivíduo
         return Individual(genes=self.genes.copy())
 
-    def mutate(self, mutation_rate=0.1, mutation_strength=0.5):
-        # Aplica mutação gaussiana em cada gene com certa probabilidade
-        for i in range(len(self.genes)):
-            if np.random.rand() < mutation_rate:
-                self.genes[i] += np.random.normal(0, mutation_strength)
-
     def crossover(self, other):
         # Cruzamento de um ponto
         point = np.random.randint(1, len(self.genes))
