@@ -9,8 +9,8 @@ if __name__ == "__main__":
         pop_size=150,
         individual_size=12,
         n_generations=40,
-        mutation_rate=0.2,
-        mutation_strength=0.5,
+        mutation_rate=0.3,
+        mutation_strength=0.7,
         n_episodes=5
     )
     print("Melhor indivíduo final:")
