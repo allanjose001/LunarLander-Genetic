@@ -15,20 +15,20 @@ def evaluate_individual(genes, n_episodes=3, render=False):
             episode_reward += reward
             if truncated:
                 break
+        """
+        # Recompensa por tocar o solo com as duas pernas
+        if obs[6] == 1 and obs[7] == 1:
+            reward_legs = 100  # valor ajustável
+            episode_reward += reward_legs
 
-         # Penalidade se não tocar o solo com nenhuma perna
-        if obs[6] == 0 or obs[7] == 0:
-            penalty = -100
-            episode_reward += penalty
+        # Recompensa por pousar próximo ao centro
+        reward_center = 100 * (1 - abs(obs[0]))  # quanto mais perto do centro, maior a recompensa
+        episode_reward += reward_center
 
-        # Penalidade por não pousar no centro
-        penalty = -100 * abs(obs[0])
-        episode_reward += penalty
-
-        # Penalidade por queda brusca (velocidade vertical alta ao pousar)
-        penalty_fall = -100 * abs(obs[3])
-        episode_reward += penalty_fall
-
+        # Recompensa por pousar suavemente (baixa velocidade vertical)
+        reward_soft = 100 * (1 - abs(obs[3]))  # quanto menor a velocidade vertical, maior a recompensa
+        episode_reward += reward_soft
+        """
         total_reward += episode_reward / n_episodes
     env.close()
     # Retorna a média das recompensas como fitness

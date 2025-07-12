@@ -32,6 +32,18 @@ def combined_policy(obs, genes):
     if obs[4] > genes[11]:
         scores[3] += abs(obs[4] - genes[11])
 
+    # Motor esquerdo: aciona se estiver muito à direita
+    if obs[0] > genes[12]:  # genes[12] é o limite para acionar motor esquerdo
+        scores[1] += abs(obs[0] - genes[12])
+
+    # Motor direito: aciona se estiver muito à esquerda
+    if obs[0] < genes[13]:  # genes[13] é o limite para acionar motor direito
+        scores[3] += abs(obs[0] - genes[13])
+
+    # Se ambas as pernas tocam o solo e genes[14] > 0, força ação 0 (desligar motores)
+    if obs[6] == 1 and obs[7] == 1 and genes[14] > 0:
+        return 0
+
     # Seleciona ação com maior score
     action = int(np.argmax(scores))
     return action

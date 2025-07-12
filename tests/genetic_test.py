@@ -6,11 +6,11 @@ from agents.genetic_algorithm import genetic_algorithm
 
 if __name__ == "__main__":
     best = genetic_algorithm(
-        pop_size=250,
-        individual_size=12,
-        n_generations=50,
-        mutation_rate=0.5,
-        mutation_strength=1.0,
+        pop_size=200,
+        individual_size=15,
+        n_generations=25,
+        mutation_rate=0.7,
+        mutation_strength=0.5,
         n_episodes=7
     )
     print("Melhor indivíduo final:")
