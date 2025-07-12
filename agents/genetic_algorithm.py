@@ -3,6 +3,7 @@ from agents.selection import roulette_selection
 from utils.evaluation import evaluate_individual
 from agents.selection import tournament_selection
 from agents.mutation import *
+from agents.crossover import *
 
 def genetic_algorithm(
     pop_size=50,
@@ -40,10 +41,14 @@ def genetic_algorithm(
             #parent1 = roulette_selection(population)
             #parent2 = roulette_selection(population)
 
-            child = parent1.crossover(parent2)
+            #child = one_point_crossover(parent1, parent2)
+            #child = two_point_crossover(parent1, parent2)
+            child = uniform_crossover(parent1, parent2, prob=0.5)
+
             child.genes = gaussian_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength)
             #child.genes = mutation.random_reset_mutation(child.genes, mutation_rate=0.1, bounds=bounds)
             #child.genes = non_uniform_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength, generation=gen, max_generations=n_generations)
+            
             child.fitness = evaluate_individual(child.genes, n_episodes=n_episodes)
             new_population.add(child)
 
