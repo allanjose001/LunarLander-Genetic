@@ -25,6 +25,10 @@ def evaluate_individual(genes, n_episodes=3, render=False):
         penalty = -100 * abs(obs[0])
         episode_reward += penalty
 
+        # Penalidade por queda brusca (velocidade vertical alta ao pousar)
+        penalty_fall = -100 * abs(obs[3])
+        episode_reward += penalty_fall
+
         total_reward += episode_reward / n_episodes
     env.close()
     # Retorna a média das recompensas como fitness
