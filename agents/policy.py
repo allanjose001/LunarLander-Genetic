@@ -1,6 +1,6 @@
 import numpy as np
 
-def combined_policy(obs, genes):
+def combined_policy(obs, genes, include_aux_reward=False):
     """
     Política combinada: função linear com bias + regras condicionais.
     genes[0:8]   -> pesos para observações
@@ -8,6 +8,10 @@ def combined_policy(obs, genes):
     genes[9]     -> limite para velocidade vertical (motor principal)
     genes[10]    -> limite para ângulo positivo (motor esquerdo)
     genes[11]    -> limite para ângulo negativo (motor direito)
+    genes[12]    -> limite para acionar motor esquerdo (posição x)
+    genes[13]    -> limite para acionar motor direito (posição x)
+    genes[14]    -> força ação 0 se ambas as pernas estiverem no solo
+    genes[15]    -> fator de recompensa por pouso suave (|vel_y|)
     """
 
     # Função linear com bias
@@ -42,8 +46,15 @@ def combined_policy(obs, genes):
 
     # Se ambas as pernas tocam o solo e genes[14] > 0, força ação 0 (desligar motores)
     if obs[6] == 1 and obs[7] == 1 and genes[14] > 0:
-        return 0
+        return 0 if not include_aux_reward else (0, 0.0)
 
     # Seleciona ação com maior score
     action = int(np.argmax(scores))
+
+    # Se include_aux_reward for True, retorna também a recompensa auxiliar para pouso suave
+    if include_aux_reward:
+        soft_landing_factor = genes[15]
+        aux_reward = soft_landing_factor * (1 - abs(obs[3])) if obs[6] == 1 and obs[7] == 1 else 0.0
+        return action, aux_reward
+
     return action

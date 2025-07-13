@@ -7,7 +7,7 @@ from agents.crossover import *
 
 def genetic_algorithm(
     pop_size=50,
-    individual_size=15,
+    individual_size=16,
     n_generations=20,
     mutation_rate=0.1,
     mutation_strength=0.5,
@@ -94,7 +94,4 @@ def genetic_algorithm(
         else:
             print("Entrada inválida. Digite 1 ou 0.")
     best_final = population.best_individual()
-    #print("Pronto para renderizar o melhor indivíduo final!")
-    #input("Pressione ENTER para visualizar o melhor agente...")
-    #evaluate_individual(best_final.genes, n_episodes=5, render=True)
     return best_final
