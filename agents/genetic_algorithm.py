@@ -1,5 +1,5 @@
 from agents.population import Population, Individual
-from agents.selection import roulette_selection
+from agents.selection import *
 from utils.evaluation import evaluate_individual
 from agents.selection import tournament_selection
 from agents.mutation import *
@@ -11,8 +11,19 @@ def genetic_algorithm(
     n_generations=20,
     mutation_rate=0.1,
     mutation_strength=0.5,
-    n_episodes=3
+    n_episodes=3,
+    selection_func=tournament_selection,
+    crossover_func=uniform_crossover,
+    mutation_func=gaussian_mutation,
+    selection_kwargs=None,
+    crossover_kwargs=None,
+    mutation_kwargs=None,
+
 ):
+    selection_kwargs = selection_kwargs or {}
+    crossover_kwargs = crossover_kwargs or {}
+    mutation_kwargs = mutation_kwargs or {}
+
     # Inicializa população
     population = Population(size=pop_size, individual_size=individual_size)
 
@@ -36,25 +47,21 @@ def genetic_algorithm(
 
         # Preenche o restante da população normalmente
         while len(new_population) < pop_size:
-            parent1 = tournament_selection(population, tournament_size=7)
-            parent2 = tournament_selection(population, tournament_size=7)
-            #parent1 = roulette_selection(population)
-            #parent2 = roulette_selection(population)
+            parent1 = tournament_selection(population, **selection_kwargs)
+            parent2 = tournament_selection(population, **selection_kwargs)
 
-            #child = one_point_crossover(parent1, parent2)
-            #child = two_point_crossover(parent1, parent2)
-            child = uniform_crossover(parent1, parent2, prob=0.5)
-
-            child.genes = gaussian_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength)
-            #child.genes = mutation.random_reset_mutation(child.genes, mutation_rate=0.1, bounds=bounds)
-            #child.genes = non_uniform_mutation(child.genes, mutation_rate=mutation_rate, mutation_strength=mutation_strength, generation=gen, max_generations=n_generations)
-            
+            child = crossover_func(parent1, parent2, **crossover_kwargs)
+            child.genes = mutation_func(child.genes, 
+                mutation_rate=mutation_rate, 
+                mutation_strength=mutation_strength,
+                **mutation_kwargs
+            )
+ 
             child.fitness = evaluate_individual(child.genes, n_episodes=n_episodes)
             new_population.add(child)
 
         population = new_population
 
-        # Imprime o melhor indivíduo da geração
         best = population.best_individual()
         print(f"Geração {gen+1}: Melhor fitness = {best.fitness:.2f}")
         print(f"Genes: {best.genes}\n")
@@ -93,5 +100,4 @@ def genetic_algorithm(
             break
         else:
             print("Entrada inválida. Digite 1 ou 0.")
-    best_final = population.best_individual()
-    return best_final
+    return population.best_individual()
