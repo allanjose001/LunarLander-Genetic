@@ -1,5 +1,5 @@
 import gymnasium as gym
-from agents.policy import combined_policy  # Importa a nova política
+from agents.policy import combined_policy
 
 def evaluate_individual(genes, n_episodes=3, render=False):
     env = gym.make("LunarLander-v3", render_mode="human" if render else None)

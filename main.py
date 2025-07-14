@@ -1,6 +1,3 @@
-import gymnasium as gym
-import numpy as np
-import pygame
 from agents.genetic_algorithm import genetic_algorithm
 from agents.selection import tournament_selection, roulette_selection
 from agents.crossover import one_point_crossover, two_point_crossover, uniform_crossover
