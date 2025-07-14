@@ -4,7 +4,7 @@
 [Allan J.](https://github.com/allanjose001) | [Ismael D.](https://github.com/ismael-ds-correia)
 
 ## Sobre
-Implementação de um algoritmo genético feito em Python para solucionar o problema do LunarLander-v2 do Gymnasium
+Implementação de um algoritmo genético feito em Python para solucionar o problema do LunarLander-v3 do Gymnasium
 
 ## Tecnologias Usadas
 

@@ -13,12 +13,6 @@ class Individual:
         # Retorna uma cópia do indivíduo
         return Individual(genes=self.genes.copy())
 
-    def crossover(self, other):
-        # Cruzamento de um ponto
-        point = np.random.randint(1, len(self.genes))
-        child_genes = np.concatenate((self.genes[:point], other.genes[point:]))
-        return Individual(genes=child_genes)
-
     def evaluate(self, fitness_function):
         # Avalia o fitness usando uma função externa
         self.fitness = fitness_function(self.genes)
