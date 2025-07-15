@@ -9,8 +9,9 @@ def evaluate_individual(genes, n_episodes=3, render=False):
         done = False
         episode_reward = 0
         while not done:
-            action, aux_reward = combined_policy(obs, genes, include_aux_reward=True)
+            action = combined_policy(obs, genes, include_aux_reward=True)
             obs, reward, done, truncated, info = env.step(action)
+            aux_reward = 0.0
             episode_reward += reward
             if truncated:
                 break

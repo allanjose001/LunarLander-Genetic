@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     best = genetic_algorithm(
         pop_size=pop_size,
-        individual_size=16,
+        individual_size=19,
         n_generations=n_generations,
         mutation_rate=mutation_rate,
         mutation_strength=mutation_strength,

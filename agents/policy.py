@@ -11,7 +11,9 @@ def combined_policy(obs, genes, include_aux_reward=False):
     genes[12]    -> limite para acionar motor esquerdo (posição x)
     genes[13]    -> limite para acionar motor direito (posição x)
     genes[14]    -> força ação 0 se ambas as pernas estiverem no solo
-    genes[15]    -> fator de recompensa por pouso suave (|vel_y|)
+    genes[15]    -> limite de suavidade do pouso (velocidade vertical máxima para desaceleração)
+    genes[16]    -> threshold de altitude para iniciar desaceleração vertical (evoluível)
+    genes[17]    -> tolerância para considerar centralizado antes do pouso (evoluível)
     """
 
     # Função linear com bias
@@ -31,6 +33,11 @@ def combined_policy(obs, genes, include_aux_reward=False):
     if obs[3] < genes[9]:
         scores[2] += abs(obs[3] - genes[9])
 
+    # Reforça motor principal se vel_y < genes[15] e altitude baixa (próximo do solo)
+    altitude_threshold = genes[16]
+    if obs[1] < altitude_threshold and obs[3] < genes[15]:
+        scores[2] += abs(obs[3] - genes[15])
+
     # Ação 3: motor direito (se ângulo < limite)
     scores[3] = linear_score
     if obs[4] > genes[11]:
@@ -44,17 +51,20 @@ def combined_policy(obs, genes, include_aux_reward=False):
     if obs[0] < genes[13]:  # genes[13] é o limite para acionar motor direito
         scores[3] += abs(obs[0] - genes[13])
 
-    # Se ambas as pernas tocam o solo e genes[14] > 0, força ação 0 (desligar motores)
-    if obs[6] == 1 and obs[7] == 1 and genes[14] > 0:
-        return 0 if not include_aux_reward else (0, 0.0)
+    center_tolerance = genes[17]
+    
+    # Se ambas as pernas tocam o solo, está centralizado e genes[14] > 0, força ação 0 (desligar motores)
+    if obs[6] == 1 and obs[7] == 1 and abs(obs[0]) <= center_tolerance and genes[14] > 0:
+        return 0
 
     # Seleciona ação com maior score
     action = int(np.argmax(scores))
-
+    
+    """
     # Se include_aux_reward for True, retorna também a recompensa auxiliar para pouso suave
     if include_aux_reward:
         soft_landing_factor = genes[15]
         aux_reward = soft_landing_factor * (1 - abs(obs[3])) if obs[6] == 1 and obs[7] == 1 else 0.0
         return action, aux_reward
-
+    """
     return action
