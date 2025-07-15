@@ -7,7 +7,7 @@ from agents.crossover import *
 
 def genetic_algorithm(
     pop_size=50,
-    individual_size=18,
+    individual_size=19,
     n_generations=20,
     mutation_rate=0.1,
     mutation_strength=0.5,
@@ -49,7 +49,7 @@ def genetic_algorithm(
         n_refine = 2  # quantidade de refinados
         mutation_strength_refine = 0.04  # mutação bem leve
         for ind in population.individuals[:2][:n_refine]:
-            refined_genes = gaussian_mutation(ind.genes, mutation_rate=0.5, mutation_strength=mutation_strength_refine)
+            refined_genes = gaussian_mutation(ind.genes, mutation_rate=0.2, mutation_strength=mutation_strength_refine)
             refined = Individual(genes=refined_genes)
             refined.fitness = evaluate_individual(refined.genes, n_episodes=n_episodes)
             new_population.add(refined)

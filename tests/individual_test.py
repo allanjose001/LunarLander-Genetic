@@ -22,8 +22,8 @@ def play_episode(individual, env):
 env = gym.make("LunarLander-v3", render_mode="human")
 
 # Instancia dois indivíduos
-ind1 = Individual(size=18)
-ind2 = Individual(size=18)
+ind1 = Individual(size=19)
+ind2 = Individual(size=19)
 
 print("Jogando com ind1...")
 reward1 = play_episode(ind1, env)

@@ -1,7 +1,7 @@
 import numpy as np
 
 class Individual:
-    def __init__(self, genes=None, size=18):
+    def __init__(self, genes=None, size=19):
         # Inicializa com vetor de genes aleatórios se não fornecido
         if genes is None:
             self.genes = np.random.uniform(-1, 1, size)

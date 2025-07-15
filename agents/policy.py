@@ -13,7 +13,7 @@ def combined_policy(obs, genes, include_aux_reward=False):
     genes[14]    -> força ação 0 se ambas as pernas estiverem no solo
     genes[15]    -> limite de suavidade do pouso (velocidade vertical máxima para desaceleração)
     genes[16]    -> threshold de altitude para iniciar desaceleração vertical (evoluível)
-    genes[17]    -> prioridade para centralizar antes do pouso (ajuste de posição horizontal)
+    genes[17]    -> tolerância para considerar centralizado antes do pouso (evoluível)
     """
 
     # Função linear com bias
@@ -51,19 +51,11 @@ def combined_policy(obs, genes, include_aux_reward=False):
     if obs[0] < genes[13]:  # genes[13] é o limite para acionar motor direito
         scores[3] += abs(obs[0] - genes[13])
 
-    # Se ambas as pernas tocam o solo e genes[14] > 0, força ação 0 (desligar motores)
-    if obs[6] == 1 and obs[7] == 1 and genes[14] > 0:
-        return 0
+    center_tolerance = genes[17]
     
-    # Prioriza centralizar antes do pouso usando genes[17]
-    # Se altitude baixa e está longe do centro, reforça motores laterais proporcionalmente ao valor do gene
-    centralize_priority = genes[17]
-    altitude_threshold = genes[16]
-    if obs[1] < altitude_threshold and abs(obs[0]) > 0.05:  # 0.05 pode ser ajustado
-        if obs[0] > 0:
-            scores[3] += centralize_priority * abs(obs[0])  # motor direito para ir ao centro
-        else:
-            scores[1] += centralize_priority * abs(obs[0])  # motor esquerdo para ir ao centro
+    # Se ambas as pernas tocam o solo, está centralizado e genes[14] > 0, força ação 0 (desligar motores)
+    if obs[6] == 1 and obs[7] == 1 and abs(obs[0]) <= center_tolerance and genes[14] > 0:
+        return 0
 
     # Seleciona ação com maior score
     action = int(np.argmax(scores))
