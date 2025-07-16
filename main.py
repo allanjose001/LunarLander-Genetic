@@ -79,3 +79,8 @@ if __name__ == "__main__":
     print("Melhor indivíduo final:")
     print("Fitness:", best.fitness)
     print("Genes:", best.genes)
+
+    with open("best_genes_log.txt", "a") as f:
+        f.write(f"Fitness: {best.fitness:.2f}\n")
+        f.write("Genes: " + " ".join([f"{g:.6f}" for g in best.genes]) + "\n")
+        f.write("-" * 40 + "\n")

@@ -1,6 +1,6 @@
 import numpy as np
 
-def combined_policy(obs, genes, include_aux_reward=False):
+def combined_policy(obs, genes):
     """
     Política combinada: função linear com bias + regras condicionais.
     genes[0:8]   -> pesos para observações
@@ -12,8 +12,8 @@ def combined_policy(obs, genes, include_aux_reward=False):
     genes[13]    -> limite para acionar motor direito (posição x)
     genes[14]    -> força ação 0 se ambas as pernas estiverem no solo
     genes[15]    -> limite de suavidade do pouso (velocidade vertical máxima para desaceleração)
-    genes[16]    -> threshold de altitude para iniciar desaceleração vertical (evoluível)
-    genes[17]    -> tolerância para considerar centralizado antes do pouso (evoluível)
+    genes[16]    -> limite de altitude para iniciar desaceleração vertical
+    genes[17]    -> tolerância para considerar centralizado antes do pouso
     """
 
     # Função linear com bias
