@@ -8,9 +8,11 @@ def gaussian_mutation(genes, mutation_rate=0.1, mutation_strength=0.5):
     return new_genes
 
 # Mutação por reset aleatorio (valor novo dentro de bounds)
-def random_reset_mutation(genes, mutation_rate=0.1, bounds=None):
+def random_reset_mutation(genes, mutation_rate=0.1, mutation_strength=0.5, bounds=None):
     if bounds is None:
-        raise ValueError("bounds é obrigatório para random_reset_mutation.")
+        # Usar bounds padrão baseado nos valores atuais dos genes
+        bounds = [(-2.0, 2.0)] * len(genes)
+    
     new_genes = genes.copy()
     for i in range(len(new_genes)):
         if np.random.rand() < mutation_rate:
