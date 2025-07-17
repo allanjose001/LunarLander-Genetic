@@ -15,21 +15,19 @@ def combined_policy(obs, genes):
     genes[16]    -> limite de altitude para iniciar desaceleração vertical
     genes[17]    -> tolerância para considerar centralizado antes do pouso
     """
-
-    # Função linear com bias
     linear_score = np.dot(obs, genes[:8]) + genes[8]
 
-    # Calcula scores para cada ação (0: nada, 1: motor esquerdo, 2: motor principal, 3: motor direito)
     scores = np.zeros(4)
-    scores[0] = 0  # ação 0: nada
+    scores[0] = 0
+    scores[1] = linear_score
+    scores[2] = linear_score
+    scores[3] = linear_score
 
     # Ação 1: motor esquerdo (se ângulo > limite)
-    scores[1] = linear_score
     if obs[4] < genes[10]:
-        scores[1] += abs(obs[4] - genes[10])  # reforça ação se condição for satisfeita
+        scores[1] += abs(obs[4] - genes[10])
 
     # Ação 2: motor principal (se vel_y < limite)
-    scores[2] = linear_score
     if obs[3] < genes[9]:
         scores[2] += abs(obs[3] - genes[9])
 
@@ -39,7 +37,6 @@ def combined_policy(obs, genes):
         scores[2] += abs(obs[3] - genes[15])
 
     # Ação 3: motor direito (se ângulo < limite)
-    scores[3] = linear_score
     if obs[4] > genes[11]:
         scores[3] += abs(obs[4] - genes[11])
 
