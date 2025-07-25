@@ -5,12 +5,12 @@ from agents.policy import combined_policy
 def render_individual(genes, n_episodes=1):
     env = gym.make("LunarLander-v3", render_mode="human")
     for ep in range(n_episodes):
-        obs, info = env.reset()
+        obs, _ = env.reset()
         done = False
         total_reward = 0
         while not done:
             action = combined_policy(obs, genes)
-            obs, reward, done, truncated, info = env.step(action)
+            obs, reward, done, truncated, _ = env.step(action)
             total_reward += reward
             if truncated:
                 break
@@ -18,10 +18,8 @@ def render_individual(genes, n_episodes=1):
     env.close()
 
 if __name__ == "__main__":
-    # Substitua pelos genes desejados (exemplo abaixo)
-    genes = [
-        0.178824, 0.320984, -0.694198, -0.949093, 0.251090, 0.011668, -0.532903, -0.534955,
-        -0.431704, 1.058738, 1.065251, -0.800082, -0.438952, 0.696824, 0.697558, 0.444008,
-        0.101568, 0.034853, 0.652524
-    ]
-    render_individual(np.array(genes), n_episodes=1)
+    genes = [-0.30355334, -0.97991491, -0.01424614, -1.70135548, -0.10998174,  0.58534388,
+              0.07423689,  1.46115483,  0.81766629, -0.35724814,  0.28569351,  0.62564056,
+              0.15626767,  0.36319294, -0.06410646, -0.52669254,  1.32678994, -0.55979689,
+              -0.58644915]
+    render_individual(np.array(genes), n_episodes=10)
