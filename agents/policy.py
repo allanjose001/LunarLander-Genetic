@@ -41,11 +41,11 @@ def combined_policy(obs, genes):
         scores[3] += abs(obs[4] - genes[11])
 
     # Motor esquerdo: aciona se estiver muito à direita
-    if obs[0] > genes[12]:  # genes[12] é o limite para acionar motor esquerdo
+    if obs[0] > genes[12]:
         scores[1] += abs(obs[0] - genes[12])
 
     # Motor direito: aciona se estiver muito à esquerda
-    if obs[0] < genes[13]:  # genes[13] é o limite para acionar motor direito
+    if obs[0] < genes[13]:
         scores[3] += abs(obs[0] - genes[13])
 
     center_tolerance = genes[17]
@@ -56,12 +56,4 @@ def combined_policy(obs, genes):
 
     # Seleciona ação com maior score
     action = int(np.argmax(scores))
-    
-    """
-    # Se include_aux_reward for True, retorna também a recompensa auxiliar para pouso suave
-    if include_aux_reward:
-        soft_landing_factor = genes[15]
-        aux_reward = soft_landing_factor * (1 - abs(obs[3])) if obs[6] == 1 and obs[7] == 1 else 0.0
-        return action, aux_reward
-    """
     return action
